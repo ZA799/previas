@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Horizonte Solar — energia solar e automação residencial</title>
+<meta name="description" content="Projeto, instalação e manutenção de energia solar e automação residencial. Simule sua economia na conta de luz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&display=swap" rel="stylesheet">
+<style>
+:root{--deep:#0E3B43;--deep-2:#155561;--sun:#F4B400;--sky:#EAF2F2;--white:#FFFFFF;--text:#13262A;--muted:#557076;
+  --f:'Archivo',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{font-family:var(--f);color:var(--text);background:var(--white);font-size:17px;line-height:1.6}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+a{color:inherit}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-stretch:85%;line-height:1.02;letter-spacing:-.5px}
+.btn{display:inline-flex;align-items:center;gap:10px;font:700 16px var(--f);padding:15px 24px;border-radius:10px;text-decoration:none;border:0;cursor:pointer}
+.btn-sun{background:var(--sun);color:var(--deep)}
+.btn-sun:hover{background:#FFC41F}
+.btn-ghost{color:var(--white);box-shadow:inset 0 0 0 2px rgba(255,255,255,.35)}
+.btn-ghost:hover{box-shadow:inset 0 0 0 2px #fff}
+
+header{background:var(--deep);color:#fff}
+.nav{display:flex;align-items:center;justify-content:space-between;height:76px}
+.logo{font-weight:800;font-size:21px;font-stretch:90%;text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo i{width:26px;height:26px;border-radius:50%;background:var(--sun);display:inline-block;box-shadow:0 0 0 5px rgba(244,180,0,.25)}
+.nav ul{display:flex;gap:30px;list-style:none;font-size:15px;font-weight:500}
+.nav ul a{text-decoration:none;opacity:.85}
+
+.hero{background:var(--deep);color:#fff;padding:56px 0 96px}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.hero h1{font-size:clamp(44px,6.4vw,82px);font-weight:800;font-stretch:78%;margin-bottom:24px}
+.hero p{font-size:19px;color:#C7DCDE;max-width:500px;margin-bottom:34px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
+.proof{display:flex;gap:36px;margin-top:46px;font-size:14px;color:#A9C6C9}
+.proof b{display:block;font-size:30px;color:#fff;font-stretch:80%}
+
+/* simulator: the memorable element */
+.sim{background:var(--white);color:var(--text);border-radius:22px;padding:32px;box-shadow:0 30px 60px rgba(0,0,0,.25)}
+.sim h2{font-size:28px;font-weight:800;margin-bottom:6px}
+.sim .sub{color:var(--muted);font-size:15px;margin-bottom:24px}
+.sim label{font-weight:600;font-size:15px;display:flex;justify-content:space-between}
+.sim label output{font-weight:800;font-size:22px;color:var(--deep)}
+input[type=range]{width:100%;margin:14px 0 6px;accent-color:var(--deep);height:28px}
+.scale{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.res{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0}
+.res div{background:var(--sky);border-radius:14px;padding:16px 18px}
+.res small{display:block;font-size:13px;color:var(--muted)}
+.res strong{font-size:28px;font-stretch:80%;color:var(--deep)}
+.res .hl{background:var(--sun)}
+.res .hl small{color:var(--deep)}
+.bar{height:12px;border-radius:99px;background:var(--sky);overflow:hidden;margin-top:6px}
+.bar span{display:block;height:100%;background:var(--deep);transition:width .25s}
+.sim .note{font-size:12px;color:var(--muted);margin-top:12px}
+.sim .btn{width:100%;justify-content:center;margin-top:18px;background:var(--deep);color:#fff}
+
+section.block{padding:104px 0}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.about h2,.svc h2,.contact h2{font-size:clamp(36px,4.6vw,58px);font-weight:800}
+.about p{color:var(--muted);margin-bottom:16px;max-width:58ch}
+.checks{list-style:none;margin-top:26px}
+.checks li{padding:14px 0 14px 36px;border-top:1px solid #DCE7E8;position:relative;font-weight:600}
+.checks li::before{content:"";position:absolute;left:0;top:17px;width:20px;height:20px;border-radius:50%;background:var(--sun) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3 3 7-7' fill='none' stroke='%230E3B43' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat}
+
+.how{background:var(--sky)}
+.how h2{font-size:clamp(32px,4vw,48px);font-weight:800;margin-bottom:44px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;counter-reset:s}
+.steps div{counter-increment:s}
+.steps div::before{content:counter(s);display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--deep);color:var(--sun);font-weight:800;margin-bottom:16px}
+.steps h3{font-size:21px;margin-bottom:8px}
+.steps p{font-size:15px;color:var(--muted)}
+
+.svc .head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:44px}
+.svc .head p{color:var(--muted);max-width:40ch}
+.grid{display:grid;grid-template-columns:2fr 1fr 1fr;grid-auto-rows:minmax(220px,auto);gap:16px}
+.card{border-radius:18px;padding:30px;background:var(--sky);display:flex;flex-direction:column;justify-content:flex-end}
+.card h3{font-size:26px;margin-bottom:8px}
+.card p{font-size:15px;color:var(--muted)}
+.card.big{grid-row:span 2;background:var(--deep);color:#fff;position:relative;overflow:hidden}
+.card.big p{color:#C7DCDE;max-width:38ch}
+.card.big .sunburst{position:absolute;right:-80px;top:-80px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,var(--sun) 0 34%,rgba(244,180,0,.25) 35% 52%,transparent 53%)}
+.card.wide{grid-column:span 2;background:var(--sun)}
+.card.wide p{color:var(--deep)}
+
+.contact{background:var(--deep);color:#fff}
+.contact .grid2{display:grid;grid-template-columns:1fr 1fr;gap:64px}
+.contact p{color:#C7DCDE;margin:18px 0 28px;max-width:44ch}
+.info{list-style:none;color:#C7DCDE;font-size:15px}
+.info li{padding:10px 0;border-top:1px solid rgba(255,255,255,.12)}
+form{background:#fff;color:var(--text);border-radius:20px;padding:30px;display:grid;gap:14px}
+form label{font-size:14px;font-weight:600;display:grid;gap:6px}
+form input,form textarea{font:16px var(--f);padding:13px 14px;border:1.5px solid #CFDCDE;border-radius:10px;width:100%}
+form input:focus,form textarea:focus{outline:none;border-color:var(--deep)}
+form .btn{justify-content:center}
+form .ok{display:none;color:var(--deep);font-weight:600}
+footer{background:#0A2D33;color:#8FB0B4;font-size:13px;padding:26px 0}
+.wa{position:fixed;right:22px;bottom:22px;width:60px;height:60px;border-radius:50%;background:#25D366;display:grid;place-items:center;box-shadow:0 10px 25px rgba(0,0,0,.25);z-index:10}
+.wa svg{width:32px;height:32px}
+
+@media (max-width:960px){
+  .nav ul{display:none}
+  .hero-grid,.about,.contact .grid2{grid-template-columns:1fr;gap:44px}
+  .steps{grid-template-columns:1fr 1fr}
+  .grid{grid-template-columns:1fr 1fr}.card.big{grid-row:auto;grid-column:span 2;min-height:280px}
+  .svc .head{flex-direction:column;align-items:flex-start}
+  section.block{padding:76px 0}
+}
+@media (max-width:560px){.wrap{padding:0 20px}.steps,.grid{grid-template-columns:1fr}.card.big,.card.wide{grid-column:auto}.res{grid-template-columns:1fr}.proof{gap:22px}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav">
+  <a class="logo" href="#"><i aria-hidden="true"></i>Horizonte Solar</a>
+  <ul><li><a href="#sobre">Sobre nós</a></li><li><a href="#servicos">Produtos e serviços</a></li><li><a href="#contato">Contato</a></li></ul>
+  <a class="btn btn-sun" href="#contato">Pedir orçamento</a>
+</div></header>
+
+<main>
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>Sua conta de luz pode cair até 90%.</h1>
+      <p>Projeto, instalação e manutenção de energia solar e automação residencial, com uma única equipe cuidando de tudo, do primeiro cálculo à homologação.</p>
+      <div class="ctas"><a class="btn btn-sun" href="#contato">Falar no WhatsApp</a><a class="btn btn-ghost" href="#servicos">Ver serviços</a></div>
+      <div class="proof"><div><b>+850</b>instalações</div><div><b>12 anos</b>de mercado</div><div><b>4,9</b>de avaliação</div></div>
+    </div>
+    <div class="sim" aria-labelledby="simt">
+      <h2 id="simt">Quanto você economiza?</h2>
+      <p class="sub">Arraste até o valor médio da sua conta de luz.</p>
+      <label for="conta">Conta mensal <output id="contaOut">R$ 450</output></label>
+      <input type="range" id="conta" min="150" max="3000" step="50" value="450">
+      <div class="scale"><span>R$ 150</span><span>R$ 3.000</span></div>
+      <div class="res">
+        <div class="hl"><small>Economia por mês</small><strong id="mes">R$ 383</strong></div>
+        <div><small>Economia em 25 anos</small><strong id="ano">R$ 115 mil</strong></div>
+        <div><small>Placas necessárias</small><strong id="placas">7</strong></div>
+        <div><small>Retorno do investimento</small><strong id="payback">~4 anos</strong></div>
+      </div>
+      <div><small style="font-size:13px;color:var(--muted)">Sua conta depois do sistema</small><div class="bar"><span id="bar" style="width:15%"></span></div></div>
+      <p class="note">Estimativa para São Paulo. O valor exato sai na análise gratuita da sua conta.</p>
+      <a class="btn" href="#contato">Quero a análise gratuita</a>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="sobre">
+  <div class="wrap about">
+    <h2>Energia limpa, com prazo cumprido.</h2>
+    <div>
+      <p>A Horizonte Solar nasceu em 2014 em São Paulo e hoje atende toda a Grande São Paulo com engenheiros e instaladores certificados.</p>
+      <p>Cada projeto começa com a análise da sua conta de luz e termina com a homologação junto à concessionária. Você não precisa cuidar de nada.</p>
+      <ul class="checks">
+        <li>Projeto elétrico e homologação inclusos</li>
+        <li>Equipamentos homologados pelo INMETRO</li>
+        <li>Garantia estendida de 5 anos em todo o sistema</li>
+        <li>Monitoramento da geração pelo celular</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="block how">
+  <div class="wrap">
+    <h2>Do orçamento à energia gerada</h2>
+    <div class="steps">
+      <div><h3>Análise da conta</h3><p>Você envia uma conta de luz e calculamos o sistema ideal.</p></div>
+      <div><h3>Projeto e proposta</h3><p>Projeto elétrico, valor fechado e prazo de instalação.</p></div>
+      <div><h3>Instalação</h3><p>Equipe própria, em 1 a 3 dias, sem sujeira e sem surpresa.</p></div>
+      <div><h3>Homologação</h3><p>Cuidamos de toda a burocracia com a concessionária.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block svc" id="servicos">
+  <div class="wrap">
+    <div class="head"><h2>Produtos e serviços</h2><p>Do dimensionamento à instalação final, um único responsável pelo seu projeto.</p></div>
+    <div class="grid">
+      <article class="card big"><div class="sunburst" aria-hidden="true"></div><h3>Energia solar fotovoltaica</h3><p>Kits on-grid residenciais e comerciais com placas monocristalinas de alta eficiência, dimensionados para o seu consumo.</p></article>
+      <article class="card"><h3>Automação residencial</h3><p>Iluminação, persianas e climatização controladas pelo celular ou por voz.</p></article>
+      <article class="card"><h3>Baterias e backup</h3><p>Sistemas híbridos com baterias de lítio para não ficar sem energia.</p></article>
+      <article class="card wide"><h3>Manutenção e limpeza</h3><p>Planos anuais de inspeção, limpeza das placas e ajuste de inversores para manter a geração no máximo.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="block contact" id="contato">
+  <div class="wrap grid2">
+    <div>
+      <h2>Peça um orçamento sem compromisso</h2>
+      <p>Respondemos em até 1 dia útil. Prefere conversar agora? Chame no WhatsApp.</p>
+      <ul class="info"><li>Atendemos toda a Grande São Paulo</li><li>Segunda a sexta, 8h às 18h · sábado, 9h às 13h</li></ul>
+    </div>
+    <form id="form">
+      <label>Nome<input required name="nome" autocomplete="name"></label>
+      <label>E-mail<input required type="email" name="email" autocomplete="email"></label>
+      <label>Valor médio da conta de luz<input name="conta" inputmode="numeric" placeholder="Ex.: R$ 450"></label>
+      <label>Mensagem<textarea name="msg" rows="3"></textarea></label>
+      <button class="btn btn-sun" type="submit">Enviar pedido de orçamento</button>
+      <p class="ok" id="ok">Pedido enviado. Retornamos em até 1 dia útil.</p>
+    </form>
+  </div>
+</section>
+</main>
+<footer><div class="wrap">© 2026 Horizonte Solar · prévia de demonstração</div></footer>
+<a class="wa" href="#contato" aria-label="Falar no WhatsApp"><svg viewBox="0 0 32 32" fill="#fff" aria-hidden="true"><path d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3zm0 23.6c-2 0-3.9-.5-5.6-1.5l-.4-.2-3.9 1 1-3.8-.3-.4A10.6 10.6 0 1 1 16 26.6zm5.8-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1a8.7 8.7 0 0 1-4.3-3.8c-.3-.6.3-.5.9-1.7.1-.2 0-.4 0-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.7.6-.1 1.9-.8 2.1-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.2-.6-.4z"/></svg></a>
+<script>
+const r=document.getElementById('conta'),fmt=n=>'R$ '+Math.round(n).toLocaleString('pt-BR');
+function calc(){const v=+r.value; const mes=v*.85; const tot=mes*12*25*1.15;
+ document.getElementById('contaOut').textContent=fmt(v);
+ document.getElementById('mes').textContent=fmt(mes);
+ document.getElementById('ano').textContent='R$ '+(tot>=1e6?(tot/1e6).toLocaleString('pt-BR',{maximumFractionDigits:1})+' mi':Math.round(tot/1000)+' mil');
+ document.getElementById('placas').textContent=Math.max(4,Math.round(v/0.95/62));
+ document.getElementById('payback').textContent='~'+(v<400?5:v<1200?4:3)+' anos';
+ document.getElementById('bar').style.width='15%';}
+r.addEventListener('input',calc);calc();
+document.getElementById('form').addEventListener('submit',e=>{e.preventDefault();document.getElementById('ok').style.display='block';e.target.reset()});
+</script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Outra Palavra — sinônimos em português</title>
+<meta name="description" content="Encontre sinônimos em português em segundos, organizados por sentido.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1C2230;--cobalt:#2747D8;--pale:#E8ECFB;--line:#DDE1EA;--muted:#5F6676;--bg:#FFFFFF;
+  --serif:'Literata',Georgia,serif;--sans:'Inter Tight',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+body{font-family:var(--sans);color:var(--ink);background:var(--bg);min-height:100vh;display:flex;flex-direction:column}
+:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px}
+header{max-width:760px;width:100%;margin:0 auto;padding:28px 24px 0;display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:var(--serif);font-weight:700;font-size:22px;text-decoration:none;color:var(--ink)}
+.logo span{color:var(--cobalt)}
+header small{color:var(--muted);font-size:14px}
+main{max-width:760px;width:100%;margin:0 auto;padding:0 24px;flex:1}
+.search{margin-top:12vh;transition:margin .25s}
+body.has-result .search{margin-top:40px}
+.search h1{font-family:var(--serif);font-weight:400;font-size:clamp(30px,5vw,44px);line-height:1.15;margin-bottom:26px}
+form{position:relative}
+input{width:100%;font:500 22px var(--sans);color:var(--ink);padding:20px 130px 20px 22px;border:2px solid var(--ink);border-radius:14px;background:#fff}
+input:focus{outline:none;border-color:var(--cobalt);box-shadow:0 0 0 4px var(--pale)}
+button.go{position:absolute;right:8px;top:8px;bottom:8px;padding:0 22px;border:0;border-radius:9px;background:var(--cobalt);color:#fff;font:600 16px var(--sans);cursor:pointer}
+button.go:hover{background:#1D38B5}
+.suggest{position:absolute;left:0;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 30px rgba(28,34,48,.08);list-style:none;overflow:hidden;z-index:3}
+.suggest li{padding:12px 20px;cursor:pointer;font-size:17px}
+.suggest li[aria-selected=true],.suggest li:hover{background:var(--pale)}
+.tryline{margin-top:16px;color:var(--muted);font-size:15px}
+.tryline button{background:none;border:0;color:var(--cobalt);font:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:3px;margin:0 3px}
+
+.result{margin:44px 0 60px}
+.word{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:18px}
+.word h2{font-family:var(--serif);font-size:48px;font-weight:600}
+.word .cls{color:var(--muted);font-size:15px}
+.sense{padding:24px 0;border-bottom:1px solid var(--line)}
+.sense h3{font-family:var(--serif);font-weight:400;font-style:italic;font-size:19px;margin-bottom:14px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 16px;font:500 16px var(--sans);color:var(--ink);cursor:pointer;transition:border-color .15s,background .15s}
+.chip:hover{border-color:var(--cobalt);background:var(--pale)}
+.chip.copied{background:var(--cobalt);border-color:var(--cobalt);color:#fff}
+.anton{margin-top:24px;font-size:15px;color:var(--muted)}
+.anton b{color:var(--ink);font-weight:600}
+.empty{margin:44px 0;padding:28px;border:1px dashed var(--line);border-radius:14px;color:var(--muted)}
+.empty strong{color:var(--ink)}
+.hint{font-size:13px;color:var(--muted);margin-top:14px}
+footer{max-width:760px;width:100%;margin:0 auto;padding:28px 24px;font-size:13px;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:10px;font-size:15px;opacity:0;transition:.2s;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (max-width:520px){input{font-size:19px;padding-right:22px}button.go{display:none}.word h2{font-size:38px}}
+</style>
+</head>
+<body>
+<header><a class="logo" href="./">outra<span>palavra</span></a><small>Sinônimos em português</small></header>
+<main>
+  <section class="search">
+    <h1>Qual palavra você quer trocar?</h1>
+    <form id="f" autocomplete="off" role="search">
+      <label for="q" class="sr" style="position:absolute;left:-9999px">Palavra</label>
+      <input id="q" name="q" placeholder="Digite uma palavra" aria-autocomplete="list" aria-controls="sug">
+      <button class="go" type="submit">Buscar</button>
+      <ul class="suggest" id="sug" role="listbox" hidden></ul>
+    </form>
+    <p class="tryline">Experimente:<button data-w="bonito">bonito</button><button data-w="importante">importante</button><button data-w="rápido">rápido</button><button data-w="feliz">feliz</button></p>
+  </section>
+  <section id="out" aria-live="polite"></section>
+</main>
+<footer>Clique em um sinônimo para copiar. Os resultados aparecem enquanto você digita.</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+// Base de demonstração. Na versão final, o dicionário completo fica em um banco de dados.
+const D={
+"bonito":{c:"adjetivo",s:[["aparência agradável",["belo","lindo","formoso","atraente","encantador","charmoso","gracioso","vistoso"]],["ação nobre",["digno","louvável","admirável","generoso"]]],a:["feio"]},
+"importante":{c:"adjetivo",s:[["que tem valor ou peso",["relevante","essencial","fundamental","significativo","crucial","primordial","decisivo"]],["que tem prestígio",["influente","renomado","notável","proeminente"]]],a:["irrelevante","insignificante"]},
+"rápido":{c:"adjetivo",s:[["que se move com velocidade",["veloz","ligeiro","célere","ágil","acelerado"]],["que dura pouco",["breve","curto","passageiro","momentâneo"]]],a:["lento","demorado"]},
+"feliz":{c:"adjetivo",s:[["que sente alegria",["contente","alegre","satisfeito","radiante","jubiloso"]],["que deu certo",["bem-sucedido","afortunado","oportuno","acertado"]]],a:["triste","infeliz"]},
+"triste":{c:"adjetivo",s:[["que sente tristeza",["abatido","melancólico","desanimado","pesaroso","cabisbaixo"]],["que causa tristeza",["lamentável","doloroso","deprimente"]]],a:["feliz","alegre"]},
+"grande":{c:"adjetivo",s:[["de tamanho elevado",["amplo","enorme","extenso","vasto","imenso","volumoso"]],["de valor ou importância",["notável","ilustre","importante","considerável"]]],a:["pequeno"]},
+"pequeno":{c:"adjetivo",s:[["de tamanho reduzido",["miúdo","diminuto","minúsculo","reduzido","compacto"]],["de pouca importância",["insignificante","modesto","irrelevante"]]],a:["grande"]},
+"bom":{c:"adjetivo",s:[["de qualidade",["excelente","ótimo","adequado","satisfatório","eficiente"]],["de bom caráter",["bondoso","generoso","gentil","caridoso"]]],a:["ruim","mau"]},
+"ruim":{c:"adjetivo",s:[["de má qualidade",["péssimo","inferior","defeituoso","precário"]],["de mau caráter",["malvado","perverso","cruel"]]],a:["bom"]},
+"difícil":{c:"adjetivo",s:[["que exige esforço",["complicado","árduo","trabalhoso","complexo","penoso","custoso"]]],a:["fácil","simples"]},
+"fácil":{c:"adjetivo",s:[["que exige pouco esforço",["simples","descomplicado","acessível","prático","elementar"]]],a:["difícil"]},
+"problema":{c:"substantivo",s:[["situação difícil",["dificuldade","obstáculo","contratempo","impasse","entrave","complicação"]],["questão a resolver",["questão","desafio","dúvida","enigma"]]],a:["solução"]},
+"ideia":{c:"substantivo",s:[["pensamento",["noção","conceito","concepção","pensamento"]],["plano",["proposta","sugestão","projeto","intenção"]]],a:[]},
+"mostrar":{c:"verbo",s:[["deixar ver",["exibir","apresentar","expor","revelar","evidenciar"]],["provar",["demonstrar","comprovar","indicar"]]],a:["esconder","ocultar"]},
+"fazer":{c:"verbo",s:[["produzir",["criar","elaborar","fabricar","produzir","construir"]],["executar",["realizar","executar","efetuar","cumprir"]]],a:["desfazer"]},
+"ajudar":{c:"verbo",s:[["prestar auxílio",["auxiliar","apoiar","socorrer","amparar","assistir","colaborar"]]],a:["atrapalhar","prejudicar"]},
+"começar":{c:"verbo",s:[["dar início",["iniciar","principiar","inaugurar","estrear","dar a largada"]]],a:["terminar","acabar"]},
+"terminar":{c:"verbo",s:[["chegar ao fim",["acabar","concluir","encerrar","finalizar","completar"]]],a:["começar","iniciar"]},
+"pensar":{c:"verbo",s:[["refletir",["refletir","ponderar","considerar","meditar","raciocinar"]],["achar",["achar","julgar","acreditar","supor"]]],a:[]},
+"falar":{c:"verbo",s:[["dizer",["dizer","expressar","declarar","afirmar","comunicar"]],["conversar",["conversar","dialogar","discursar","tagarelar"]]],a:["calar"]},
+"usar":{c:"verbo",s:[["fazer uso",["utilizar","empregar","aplicar","valer-se de","recorrer a"]]],a:[]},
+"importância":{c:"substantivo",s:[["valor",["relevância","valor","peso","significado","destaque","interesse"]]],a:["irrelevância"]},
+"objetivo":{c:"substantivo",s:[["finalidade",["meta","propósito","finalidade","alvo","intenção","fim"]]],a:[]},
+"forma":{c:"substantivo",s:[["maneira",["modo","maneira","jeito","método"]],["formato",["formato","contorno","figura","feitio"]]],a:[]},
+"mudança":{c:"substantivo",s:[["alteração",["alteração","transformação","modificação","variação","transição"]]],a:["permanência"]},
+"cansado":{c:"adjetivo",s:[["sem energia",["exausto","esgotado","fatigado","extenuado","abatido"]],["entediado",["farto","enfastiado","aborrecido"]]],a:["descansado","disposto"]},
+"inteligente":{c:"adjetivo",s:[["que aprende com facilidade",["esperto","sagaz","perspicaz","brilhante","astuto","engenhoso"]]],a:["tolo"]},
+"novo":{c:"adjetivo",s:[["recente",["recente","atual","moderno","inédito","original"]],["jovem",["jovem","moço"]]],a:["velho","antigo"]},
+"amor":{c:"substantivo",s:[["sentimento de afeto",["afeto","carinho","ternura","paixão","afeição","estima"]]],a:["ódio"]},
+"casa":{c:"substantivo",s:[["moradia",["lar","residência","moradia","habitação","domicílio"]]],a:[]},
+"trabalho":{c:"substantivo",s:[["atividade profissional",["emprego","ofício","ocupação","serviço","profissão"]],["esforço",["esforço","labuta","empenho","dedicação"]]],a:["ócio"]},
+"claro":{c:"adjetivo",s:[["com luz",["iluminado","luminoso","brilhante"]],["fácil de entender",["evidente","nítido","óbvio","compreensível","explícito"]]],a:["escuro","confuso"]},
+"necessário":{c:"adjetivo",s:[["que não pode faltar",["indispensável","essencial","imprescindível","obrigatório","preciso"]]],a:["dispensável"]},
+"exemplo":{c:"substantivo",s:[["caso ilustrativo",["amostra","modelo","ilustração","caso","demonstração"]],["referência",["modelo","referência","padrão","inspiração"]]],a:[]},
+"principal":{c:"adjetivo",s:[["mais importante",["essencial","central","primordial","fundamental","maior","capital"]]],a:["secundário"]}
+};
+const norm=s=>s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").trim();
+const keys=Object.keys(D), idx={}; keys.forEach(k=>idx[norm(k)]=k);
+const q=document.getElementById('q'), sug=document.getElementById('sug'), out=document.getElementById('out'), toast=document.getElementById('toast');
+let active=-1;
+
+function render(word){
+  const k=idx[norm(word)]; document.body.classList.add('has-result'); sug.hidden=true;
+  if(!word.trim()){out.innerHTML='';document.body.classList.remove('has-result');return}
+  if(!k){
+    const near=keys.filter(x=>norm(x).startsWith(norm(word).slice(0,2))).slice(0,5);
+    out.innerHTML=`<div class="empty"><strong>Não encontramos “${esc(word)}” nesta demonstração.</strong><br>Confira a grafia ou tente outra palavra${near.length?': '+near.map(n=>`<button class="chip" data-w="${n}" style="margin:8px 6px 0 0">${n}</button>`).join(''):'.'}</div>`;
+    history.replaceState(null,'','#'+encodeURIComponent(word)); return;
+  }
+  const e=D[k];
+  out.innerHTML=`<article class="result"><div class="word"><h2>${k}</h2><span class="cls">${e.c} · ${e.s.reduce((n,s)=>n+s[1].length,0)} sinônimos</span></div>`+
+    e.s.map(([sense,list])=>`<div class="sense"><h3>No sentido de ${sense}</h3><div class="chips">${list.map(w=>`<button class="chip" data-copy="${w}">${w}</button>`).join('')}</div></div>`).join('')+
+    (e.a.length?`<p class="anton">Antônimos: ${e.a.map(a=>idx[norm(a)]?`<b><a href="#${a}" data-w="${a}">${a}</a></b>`:`<b>${a}</b>`).join(', ')}</p>`:'')+`</article>`;
+  history.replaceState(null,'','#'+encodeURIComponent(k));
+}
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function showSug(){
+  const v=norm(q.value); if(!v){sug.hidden=true;return}
+  const m=keys.filter(k=>norm(k).startsWith(v)).slice(0,6); active=-1;
+  if(!m.length||(m.length===1&&norm(m[0])===v)){sug.hidden=true;return}
+  sug.innerHTML=m.map((k,i)=>`<li role="option" id="o${i}" data-w="${k}">${k}</li>`).join(''); sug.hidden=false;
+}
+q.addEventListener('input',()=>{showSug(); if(idx[norm(q.value)]) render(q.value)});
+q.addEventListener('keydown',e=>{
+  const items=[...sug.querySelectorAll('li')]; if(sug.hidden||!items.length) return;
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault(); active=(active+(e.key==='ArrowDown'?1:-1)+items.length)%items.length; items.forEach((li,i)=>li.setAttribute('aria-selected',i===active)); q.setAttribute('aria-activedescendant','o'+active)}
+  if(e.key==='Enter'&&active>=0){e.preventDefault(); q.value=items[active].dataset.w; render(q.value)}
+  if(e.key==='Escape') sug.hidden=true;
+});
+document.getElementById('f').addEventListener('submit',e=>{e.preventDefault(); render(q.value)});
+document.addEventListener('click',e=>{
+  const w=e.target.closest('[data-w]'); if(w){e.preventDefault(); q.value=w.dataset.w; render(q.value); q.focus(); return}
+  const c=e.target.closest('[data-copy]');
+  if(c){navigator.clipboard?.writeText(c.dataset.copy).catch(()=>{}); c.classList.add('copied'); setTimeout(()=>c.classList.remove('copied'),900);
+    toast.textContent=`“${c.dataset.copy}” copiado`; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),1400)}
+  if(!e.target.closest('form')) sug.hidden=true;
+});
+if(location.hash){q.value=decodeURIComponent(location.hash.slice(1)); render(q.value)}
+</script>
+</body>
+</html>

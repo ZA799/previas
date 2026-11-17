@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atrium — Mentoria para executivos</title>
+<meta name="description" content="Mentoria individual para diretores e C-levels que precisam decidir melhor, liderar com clareza e preparar o próximo passo da carreira.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#102A2A; --ink-2:#1D3B3A; --paper:#F2F4F1; --brass:#B08D57; --mist:#C9D3CF; --text:#1A1F1E; --muted:#56625F;
+  --serif:'Instrument Serif', Georgia, serif; --sans:'Manrope', system-ui, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{font-family:var(--sans);color:var(--text);background:var(--paper);font-size:17px;line-height:1.6}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+
+/* nav */
+header{position:absolute;inset:0 0 auto 0;z-index:5}
+.nav{display:flex;align-items:center;justify-content:space-between;height:88px;color:var(--paper)}
+.logo{font-family:var(--serif);font-size:30px;letter-spacing:.5px;text-decoration:none}
+.nav ul{display:flex;gap:34px;list-style:none;font-size:15px}
+.nav ul a{text-decoration:none;opacity:.8}
+.nav ul a:hover{opacity:1}
+.btn{display:inline-block;font-weight:600;font-size:15px;padding:14px 26px;border-radius:2px;text-decoration:none;transition:background .2s,color .2s}
+.btn-brass{background:var(--brass);color:#fff}
+.btn-brass:hover{background:#9A7A48}
+.btn-line{border:1px solid rgba(242,244,241,.5);color:var(--paper)}
+.btn-line:hover{background:rgba(242,244,241,.08)}
+
+/* hero */
+.hero{background:var(--ink);color:var(--paper);padding:180px 0 120px;position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:72px;align-items:end}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(48px,7vw,96px);line-height:.98;letter-spacing:-1px}
+.hero h1 em{color:var(--mist)}
+.hero p.lead{font-size:19px;max-width:520px;margin:34px 0 40px;color:#C9D3CF}
+.hero .ctas{display:flex;gap:14px;flex-wrap:wrap}
+.agenda{border-left:1px solid rgba(201,211,207,.3);padding-left:32px}
+.agenda h2{font-family:var(--serif);font-weight:400;font-size:26px;margin-bottom:18px}
+.agenda li{list-style:none;padding:14px 0;border-bottom:1px solid rgba(201,211,207,.18);font-size:15px;color:#DCE3E0;display:flex;justify-content:space-between;gap:16px}
+.agenda li span:last-child{color:var(--brass);white-space:nowrap}
+
+/* problem */
+section{padding:120px 0}
+.statement{display:grid;grid-template-columns:.8fr 1.2fr;gap:72px}
+.statement h2{font-family:var(--serif);font-weight:400;font-size:clamp(36px,4.4vw,56px);line-height:1.05}
+.statement p{max-width:62ch;color:var(--muted);margin-bottom:18px}
+.pains{margin-top:34px;display:grid;grid-template-columns:1fr 1fr;gap:0 40px}
+.pains p{border-top:1px solid var(--mist);padding:18px 0;margin:0;color:var(--text);font-weight:500}
+
+/* journey */
+.journey{background:#fff}
+.journey h2{font-family:var(--serif);font-weight:400;font-size:clamp(36px,4.4vw,56px);line-height:1.05;max-width:16ch}
+.journey .intro{display:flex;justify-content:space-between;align-items:end;gap:40px;margin-bottom:64px}
+.journey .intro p{max-width:42ch;color:var(--muted)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--ink)}
+.step{padding:30px 28px 10px 0}
+.step .when{font-family:var(--serif);font-size:38px;white-space:nowrap;color:var(--brass);line-height:1}
+.step h3{font-size:18px;margin:16px 0 10px}
+.step p{font-size:15px;color:var(--muted)}
+
+/* mentor */
+.mentor{display:grid;grid-template-columns:.9fr 1.1fr;gap:80px;align-items:center}
+.portrait{aspect-ratio:4/5;background:linear-gradient(160deg,var(--ink-2),var(--ink));position:relative;display:flex;align-items:flex-end;padding:28px;color:var(--mist);font-size:14px}
+.portrait::before{content:"";position:absolute;inset:18px;border:1px solid rgba(176,141,87,.5)}
+.mentor blockquote{font-family:var(--serif);font-size:clamp(30px,3.4vw,44px);line-height:1.15;margin-bottom:28px}
+.mentor p{color:var(--muted);max-width:56ch;margin-bottom:16px}
+.creds{display:flex;gap:44px;margin-top:30px}
+.creds div{font-size:14px;color:var(--muted)}
+.creds strong{display:block;font-family:var(--serif);font-weight:400;font-size:40px;color:var(--ink);line-height:1.1}
+
+/* formats */
+.formats{background:var(--ink);color:var(--paper)}
+.formats h2{font-family:var(--serif);font-weight:400;font-size:clamp(36px,4.4vw,56px);margin-bottom:56px}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:rgba(201,211,207,.2)}
+.plan{background:var(--ink);padding:44px 40px}
+.plan.feat{background:var(--ink-2)}
+.plan h3{font-family:var(--serif);font-weight:400;font-size:34px}
+.plan .dur{color:var(--brass);font-weight:600;font-size:14px;margin:6px 0 22px}
+.plan li{list-style:none;padding:9px 0;color:#DCE3E0;font-size:15px;border-bottom:1px solid rgba(201,211,207,.12)}
+.plan .btn{margin-top:30px}
+
+/* cta */
+.final{text-align:left}
+.final .box{display:flex;justify-content:space-between;align-items:center;gap:40px;border-top:2px solid var(--ink);padding-top:56px}
+.final h2{font-family:var(--serif);font-weight:400;font-size:clamp(34px,4vw,52px);line-height:1.05;max-width:18ch}
+footer{padding:36px 0;font-size:13px;color:var(--muted);border-top:1px solid var(--mist)}
+
+@media (max-width:900px){
+  .nav ul{display:none}
+  .hero{padding:140px 0 80px}
+  .hero-grid,.statement,.mentor{grid-template-columns:1fr;gap:48px}
+  .steps{grid-template-columns:1fr 1fr;gap:0 24px}
+  .plans{grid-template-columns:1fr}
+  .pains{grid-template-columns:1fr}
+  .journey .intro,.final .box{flex-direction:column;align-items:flex-start}
+  section{padding:80px 0}
+}
+@media (max-width:520px){.wrap{padding:0 22px}.steps{grid-template-columns:1fr}.creds{gap:24px}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav">
+  <a class="logo" href="#">Atrium</a>
+  <ul><li><a href="#jornada">Como funciona</a></li><li><a href="#mentor">Mentor</a></li><li><a href="#formatos">Formatos</a></li></ul>
+  <a class="btn btn-line" href="#contato">Agendar conversa</a>
+</div></header>
+
+<main>
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>No topo, as decisões ficam mais solitárias.<br><em>Não precisam ser.</em></h1>
+      <p class="lead">Mentoria individual para diretores e C-levels que precisam decidir melhor, liderar com clareza e preparar o próximo passo da carreira.</p>
+      <div class="ctas"><a class="btn btn-brass" href="#contato">Agendar conversa inicial</a><a class="btn btn-line" href="#jornada">Ver como funciona</a></div>
+    </div>
+    <aside class="agenda" aria-label="O que trabalhamos">
+      <h2>O que levamos para a mesa</h2>
+      <ul>
+        <li><span>Decisões de alto impacto</span><span>estratégia</span></li>
+        <li><span>Relação com conselho e sócios</span><span>influência</span></li>
+        <li><span>Formação do time de liderança</span><span>gestão</span></li>
+        <li><span>Transição para C-level</span><span>carreira</span></li>
+        <li><span>Comunicação em momentos críticos</span><span>presença</span></li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<section>
+  <div class="wrap statement">
+    <h2>Quem lidera tem pouca gente com quem pensar em voz alta.</h2>
+    <div>
+      <p>Seu time espera respostas. O conselho espera resultado. E as perguntas mais difíceis do cargo raramente têm alguém do lado para discutir com franqueza.</p>
+      <p>A mentoria é esse espaço: conversas confidenciais com quem já ocupou cadeiras parecidas, para transformar dúvida em decisão.</p>
+      <div class="pains">
+        <p>Assumiu uma posição nova e precisa mostrar resultado rápido</p>
+        <p>Tem um time talentoso, mas desalinhado</p>
+        <p>Está entre duas decisões que mudam a empresa</p>
+        <p>Quer chegar ao próximo cargo com um plano claro</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="journey" id="jornada">
+  <div class="wrap">
+    <div class="intro">
+      <h2>Uma jornada de 90 dias, com começo, meio e entrega.</h2>
+      <p>Cada etapa termina com algo concreto na sua mão: um diagnóstico, um plano, uma decisão tomada.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="when">Semana 1</div><h3>Diagnóstico</h3><p>Entendemos o seu contexto, os seus desafios e o que precisa mudar nos próximos meses.</p></div>
+      <div class="step"><div class="when">Semana 2</div><h3>Plano de 90 dias</h3><p>Prioridades, marcos e os indicadores que vão mostrar que você está no caminho.</p></div>
+      <div class="step"><div class="when">Semanas 3–11</div><h3>Sessões quinzenais</h3><p>Encontros de 90 minutos para decisões reais, com acesso entre sessões quando algo urgente surgir.</p></div>
+      <div class="step"><div class="when">Semana 12</div><h3>Revisão e próximo ciclo</h3><p>O que avançou, o que ficou, e como você segue com autonomia.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="mentor">
+  <div class="wrap mentor">
+    <div class="portrait" role="img" aria-label="Espaço para a foto do mentor">Foto do mentor</div>
+    <div>
+      <blockquote>“Não dou respostas prontas. Faço as perguntas que ninguém mais na sua empresa vai fazer.”</blockquote>
+      <p>Mais de 20 anos em cargos de diretoria e conselho, em empresas nacionais e multinacionais. Hoje dedica a carreira a acompanhar executivos em momentos de transição e crescimento.</p>
+      <p>Cada mentorado é acompanhado pessoalmente, com um número limitado de vagas por semestre.</p>
+      <div class="creds"><div><strong>20+</strong>anos em liderança</div><div><strong>8</strong>vagas por semestre</div><div><strong>100%</strong>confidencial</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="formats" id="formatos">
+  <div class="wrap">
+    <h2>Dois formatos, o mesmo compromisso.</h2>
+    <div class="plans">
+      <div class="plan"><h3>Mentoria Essencial</h3><div class="dur">90 dias</div><ul><li>Diagnóstico e plano de 90 dias</li><li>6 sessões individuais de 90 minutos</li><li>Material de apoio após cada sessão</li></ul><a class="btn btn-line" href="#contato">Quero saber mais</a></div>
+      <div class="plan feat"><h3>Mentoria Conselho</h3><div class="dur">6 meses</div><ul><li>Tudo do Essencial</li><li>12 sessões e acesso direto entre encontros</li><li>Preparação para reuniões de conselho e apresentações-chave</li></ul><a class="btn btn-brass" href="#contato">Agendar conversa</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="final" id="contato">
+  <div class="wrap box">
+    <h2>A primeira conversa é para entender se faz sentido. Sem compromisso.</h2>
+    <a class="btn btn-brass" href="#contato">Agendar conversa inicial</a>
+  </div>
+</section>
+</main>
+<footer><div class="wrap">Atrium Mentoria Executiva · nome e textos ilustrativos desta prévia</div></footer>
+</body>
+</html>
